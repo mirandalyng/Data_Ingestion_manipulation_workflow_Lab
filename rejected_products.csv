@@ -1,0 +1,8 @@
+,id,name,price,currency,created_at,missing_currency,missing_date,missing_price,low_price,luxury_products
+3,,Jacket,-200.0,SEK,,False,True,False,False,False
+4,SKU-1005,,,,,True,True,True,False,False
+5,SKU-1006,Designer Coat,,SEK,2024-05-01,False,False,True,False,False
+6,,Hat,,SEK,,False,True,True,False,False
+14,SKU-1015,Hoodie,-50.0,SEK,2024-04-15,False,False,False,False,False
+42,SKU-1043,Cardigan,,SEK,2024-11-15,False,False,True,False,False
+51,SKU-1052,Coat,,SEK,2025-01-10,False,False,True,False,False
