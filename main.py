@@ -1,6 +1,4 @@
-def main():
-    print("Hello from data-ingestion-manipulation-workflow-lab!")
+import pandas as pd
 
-
-if __name__ == "__main__":
-    main()
+# Read the csv-file
+read_products = pd.read_csv("products.csv")
