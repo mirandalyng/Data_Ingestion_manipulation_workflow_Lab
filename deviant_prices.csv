@@ -1,0 +1,11 @@
+id,name,price,currency,created_at
+,Jacket,-200.0,SEK,
+SKU-1015,Hoodie,-50.0,SEK,2024-04-15
+SKU-1014,T-Shirt,0.0,SEK,2024-04-10
+SKU-1021,Ring,25000.0,SEK,2024-06-05
+SKU-1039,Coat,999999.0,SEK,2024-10-15
+SKU-1005,,,,
+SKU-1006,Designer Coat,,SEK,2024-05-01
+,Hat,,SEK,
+SKU-1043,Cardigan,,SEK,2024-11-15
+SKU-1052,Coat,,SEK,2025-01-10

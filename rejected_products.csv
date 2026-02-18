@@ -1,0 +1,10 @@
+,id,name,price,currency,created_at
+3,,Jacket,-200.0,SEK,
+4,SKU-1005,,,,
+5,SKU-1006,Designer Coat,,SEK,2024-05-01
+6,,Hat,,SEK,
+7,SKU-1008,Gloves,120.0,,2024-06-20
+14,SKU-1015,Hoodie,-50.0,SEK,2024-04-15
+42,SKU-1043,Cardigan,,SEK,2024-11-15
+51,SKU-1052,Coat,,SEK,2025-01-10
+54,SKU-1055,Scarf,300.0,,2025-02-05

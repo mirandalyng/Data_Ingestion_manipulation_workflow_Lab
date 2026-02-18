@@ -5,6 +5,9 @@ if __name__ == '__main__':
     # Read the csv-file
     products = pd.read_csv("products.csv", sep=";")
 
+    # keeping the raw data in a copy
+    products_raw = products.copy()
+
     # -----------------------#
     ####### TRANSFORM #######
     # -----------------------#
@@ -37,28 +40,51 @@ if __name__ == '__main__':
     # -----------------------#
 
     # flag for missing currency
-    products["missing_currency"] = products["currency"].isna()
+    missing_currency = products["currency"].isna()
 
     # flag for missing created_at
-    products["missing_date"] = products["created_at"].isna()
+    missing_date = products["created_at"].isna()
 
     # flag for missing_price
-    products["missing_price"] = products["price"].isna()
+    missing_price = products["price"].isna()
 
     # flag for low_price 0 or less
-    products["low_price"] = products["price"] >= 0
+    low_price = products["price"] == 0
 
     # flag for luxury product where price is more than 4000
-    products["luxury_products"] = products["price"] > 4000
+    luxury_product = products["price"] > 4000
+
+    flag_columns = (
+        missing_currency |
+        missing_date |
+        low_price |
+        missing_price |
+        luxury_product
+    )
+
+    flagged_products = products[flag_columns].copy()
+
+    # add columns for the flagging in the copy of the products
+
+    flagged_products["missing_currency"] = products["currency"].isna()
+
+    flagged_products["missing_date"] = products["created_at"].isna()
+
+    flagged_products["missing_price"] = products["price"].isna()
+
+    flagged_products["low_price"] = products["price"] == 0
+
+    flagged_products["luxury_product"] = products["price"] > 4000
 
     # -----------------------#
-    ####### REJECT   #######
+    #######   REJECT   #######
     # -----------------------#
 
     # Define the rejected data values
     rejected_data = (
         products["id"].isna() |
         products["price"].isna() |
+        products["currency"].isna() |
         (products["price"] < 0)
     )
 
@@ -80,14 +106,35 @@ if __name__ == '__main__':
         "num_of_missing_price": [num_of_missing_price]
     })
 
-    # read to a new csv - file
-    analytics_summary.to_csv("analytics_summary.csv", index=False)
-
     # extract and calculate the top 10 expensive products
     top_10_products = df_valid.sort_values("price", ascending=False).head(10)
 
-    top_10_invalid_prices = df_rejected.sort_values(
-        "price").head(10)
+    negative_prices = df_rejected[df_rejected["price"] < 0]
+    cheap_products = df_valid[df_valid["price"] < 10]
+    expensive_products = df_valid[df_valid["price"] > 20000]
+    missing_price = products[products["price"].isna()]
+
+    # Slå ihop alla
+    deviant_prices = pd.concat([
+        negative_prices,
+        cheap_products,
+        expensive_products,
+        missing_price
+    ])
+
+    # -----------------------#
+    ######   LOAD  ###########
+    # -----------------------#
+
+    # to a new csv - file for analytics summary
+    analytics_summary.to_csv("analytics_summary.csv", index=False)
+
+    # flagged products csv-file
+    flagged_products.to_csv("flagged_products.csv", index=False)
 
     # Rejected products in a seperate csv file
     rejected_products = df_rejected.to_csv("rejected_products.csv")
+
+    top_10_products.to_csv("top_10_products.csv", index=False)
+
+    deviant_prices.to_csv("deviant_prices.csv", index=False)
