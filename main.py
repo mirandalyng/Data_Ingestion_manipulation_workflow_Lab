@@ -5,9 +5,6 @@ if __name__ == '__main__':
     # Read the csv-file
     products = pd.read_csv("products.csv", sep=";")
 
-    # keeping the raw data in a copy
-    products_raw = products.copy()
-
     # -----------------------#
     ####### TRANSFORM #######
     # -----------------------#
