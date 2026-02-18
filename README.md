@@ -20,7 +20,7 @@ $ uv sync
 **Flag**
 
 - The data that _could_ be wrong is flagged.
-- It is excludet from the calculations-
+- It is excludet from the calculations
 
 **Reject**
 

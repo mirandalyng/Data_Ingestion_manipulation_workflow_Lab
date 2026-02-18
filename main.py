@@ -10,11 +10,12 @@ if __name__ == '__main__':
     # -----------------------#
 
     # clean the column names
-    products.columns = products.columns.str.strip()
     # remove withespace before and after
     # uppercase in the id
     # titles in the names
-    # Replacing spaces and -
+    # Replacing spaces and
+
+    products.columns = products.columns.str.strip()
 
     products["id"] = products["id"].str.strip().replace(
         " ", "").replace("_", "-").str.upper()
@@ -27,47 +28,51 @@ if __name__ == '__main__':
     # Date to the right format
     products["created_at"] = pd.to_datetime(
         products["created_at"], errors="coerce", format="mixed")
-    # price to numeric
+
+    # Price to numeric
     products["price"] = pd.to_numeric(products["price"], errors="coerce")
 
     # -----------------------#
-    ####### FLAGGING   #######
+    ####### FLAG  #######
     # -----------------------#
 
     # flag for missing currency
     products["missing_currency"] = products["currency"].isna()
 
-    # flag for missing created at
+    # flag for missing created_at
     products["missing_date"] = products["created_at"].isna()
 
-    # flag for missing price
+    # flag for missing_price
     products["missing_price"] = products["price"].isna()
 
-    products["low_price"] = products["price"] == 0
+    # flag for low_price 0 or less
+    products["low_price"] = products["price"] >= 0
 
+    # flag for luxury product where price is more than 4000
     products["luxury_products"] = products["price"] > 4000
+
     # -----------------------#
     ####### REJECT   #######
     # -----------------------#
 
+    # Define the rejected data values
     rejected_data = (
         products["id"].isna() |
         products["price"].isna() |
         (products["price"] < 0)
     )
 
+    # copy and seperate the rejected and valid data based on T/F
     df_rejected = products[rejected_data].copy()
     df_valid = products[~rejected_data].copy()
 
-    # Valid csv_file with analytics summary
-
+    # calculate the data for the analytics summary
     mean_price = df_valid["price"].mean()
     median_price = df_valid["price"].median()
     num_of_products = len(df_valid)
     num_of_missing_price = len(df_rejected["price"])
 
     # create a dataframe for the analytics summary
-
     analytics_summary = pd.DataFrame({
         "mean_price": [mean_price],
         "median_price": [median_price],
@@ -83,8 +88,6 @@ if __name__ == '__main__':
 
     top_10_invalid_prices = df_rejected.sort_values(
         "price").head(10)
-
-    print(top_10_invalid_prices)
 
     # Rejected products in a seperate csv file
     rejected_products = df_rejected.to_csv("rejected_products.csv")
